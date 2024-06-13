@@ -4,6 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//builder.Services.AddDbContext<AplicationDbContext>(opciones =>
+//{
+//    opciones.UseSqlServer(builder.Configuration.GetConnectionString("Cadena_Coneccion"));
+//});
 // Add services to the container.
 
 builder.Services.AddControllers();
