@@ -27,27 +27,30 @@ namespace ApiPeliculas.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public IActionResult Get_Categorias()
         {
-            Categoria categor = new Categoria()
-            {
-                FechaCreacion = DateTime.Now,
-                id = 23,
-                Nombre = "afea"
-            };
             ICollection<Categoria> lista_categ = categ_repo.Get_Categorias();
             List<Categoria_Dto> list_cat_dto = new List<Categoria_Dto>();
             //---
             foreach (var  i in lista_categ)
-            {
-                Categoria_Dto cat_dto = mapper.Map<Categoria, Categoria_Dto>(i);
+            {                
+                Categoria_Dto cat_dto = mapper.Map<Categoria_Dto>(i);
                 list_cat_dto.Add(cat_dto);
             }            
-            //Categoria_Dto cat_dto = mapper.Map<Categoria, Categoria_Dto>(categor);
-            //mapper.Map()
-            return Ok(list_cat_dto);
-
-
-
-        
+            return Ok(list_cat_dto);        
+        }
+        [HttpGet("{categoriaId:int}", Name ="Coger_Categoria")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Get_Categoria(int categoriaId)
+        {
+            Categoria categoria_especifica = categ_repo.GetCategoria(categoriaId);
+            if (categoria_especifica == null)
+            {
+                return NotFound();
+            }
+            Categoria_Dto cat_dto = mapper.Map<Categoria_Dto>(categoria_especifica);
+            return Ok(cat_dto);
         }
     }
 }
