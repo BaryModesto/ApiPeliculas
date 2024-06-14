@@ -53,6 +53,11 @@ namespace ApiPeliculas.Controllers
             return Ok(cat_dto);
         }
         [HttpPost]
+        [ProducesResponseType(201,Type =typeof (Categoria_Dto))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
         public IActionResult Crear_Categoria([FromBody]Crear_Categoria_Dto _cat_dto)
         {
             if (!ModelState.IsValid)
@@ -75,6 +80,29 @@ namespace ApiPeliculas.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ModelState);
             }
             return Created();
+            //return CreatedAtRoute("Get_Categoria",new { categoriaId = categ.id},categ)
+        }
+        [HttpPatch("{categoriaID:int}", Name = "Actualizar_Patch_Categoria")]
+        [ProducesResponseType(201,Type = typeof(Categoria_Dto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Actualizar_Patch_Categoria(int categoriaID,[FromBody]Categoria_Dto _cat_dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (_cat_dto == null || _cat_dto.id != categoriaID)
+            {
+                return BadRequest(ModelState);
+            }
+            Categoria categ = mapper.Map<Categoria>(_cat_dto);
+            if (!categ_repo.Actualizar_Categorias(categ))
+            {
+                ModelState.AddModelError("", $"Algo salio mal actualizando el registro {_cat_dto.Nombre}");
+                return StatusCode(StatusCodes.Status500InternalServerError, ModelState);
+            }
+            return NoContent();
         }
     }
 }
