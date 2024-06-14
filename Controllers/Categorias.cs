@@ -52,5 +52,29 @@ namespace ApiPeliculas.Controllers
             Categoria_Dto cat_dto = mapper.Map<Categoria_Dto>(categoria_especifica);
             return Ok(cat_dto);
         }
+        [HttpPost]
+        public IActionResult Crear_Categoria([FromBody]Crear_Categoria_Dto _cat_dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if(_cat_dto == null)
+            {
+                return BadRequest(ModelState);
+            }
+            if (categ_repo.Existe_Categorias(_cat_dto.Nombre))
+            {
+                ModelState.AddModelError("", "La categoria ya existe");
+                return StatusCode(StatusCodes.Status404NotFound,ModelState);
+            }
+            Categoria categ = mapper.Map<Categoria>(_cat_dto);
+            if( !categ_repo.Crear_Categoria(categ) )
+            {
+                ModelState.AddModelError("", $"Algo salio mal guardando el registro {_cat_dto.Nombre}");
+                return StatusCode(StatusCodes.Status500InternalServerError, ModelState);
+            }
+            return Created();
+        }
     }
 }
