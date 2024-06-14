@@ -7,8 +7,7 @@ namespace ApiPeliculas.Modelos
         [Key]
         public int id { get; set; }
         [Required]
-        public string Nombre { get; set; }
-        [Required]
+        public string Nombre { get; set; }        
         public DateTime FechaCreacion { get; set; }
     }
 }
