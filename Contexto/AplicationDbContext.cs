@@ -8,5 +8,6 @@ namespace ApiPeliculas.Migraciones
         public AplicationDbContext(DbContextOptions<AplicationDbContext> options):base(options){}
 
         public DbSet<Categoria> Categoria {  get; set; }
+        public DbSet<Pelicula> Pelicula { get; set; }
     }
 }
