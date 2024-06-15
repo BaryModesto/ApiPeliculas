@@ -5,7 +5,7 @@ namespace ApiPeliculas.Modelos.Dtos
     public class UsuarioRegistroDto
     {
         [Required(ErrorMessage ="El usuario es obligatorio")]
-        public int NombreUsuario { get; set; }
+        public string NombreUsuario { get; set; }
         [Required(ErrorMessage ="El nombre es obligatorio")]
         public string NombreReal { get; set; }
         [Required(ErrorMessage ="El password es obligatorio")]
