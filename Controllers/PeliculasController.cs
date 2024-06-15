@@ -21,7 +21,7 @@ namespace ApiPeliculas.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public IActionResult Get_Peliculs()
+        public IActionResult Get_Peliculas()
         {
             ICollection<Pelicula> lista_peli= peli_repo.Get_Peliculas();
             List<Pelicula_Dto> list_peli_dto = new List<Pelicula_Dto>();
@@ -38,7 +38,7 @@ namespace ApiPeliculas.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get_Categoria(int pelicula_id)
+        public IActionResult Get_Pelicula(int pelicula_id)
         {
             Pelicula peli_especifica = peli_repo.GetPelicula(pelicula_id);
             if (peli_especifica == null)
@@ -115,6 +115,23 @@ namespace ApiPeliculas.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ModelState);
             }
             return NoContent();
+        }
+
+        [HttpGet("{categoria_id:int}",Name = "Get_Peliculas_Categoria")]
+        public IActionResult Get_Peliculas_Categoria(int categoria_id)
+        {
+            ICollection<Pelicula> lista_peli = peli_repo.Get_Peliculas();
+            if (lista_peli == null || !lista_peli.Any())
+            {
+                return NotFound();
+            }
+            var list_peli_dto = new List<Pelicula_Dto>();
+            //---
+            foreach (var i in lista_peli)
+            {
+                list_peli_dto.Add(mapper.Map<Pelicula_Dto>(i));
+            }
+            return Ok(list_peli_dto);
         }
     }
 }
