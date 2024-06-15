@@ -82,6 +82,7 @@ namespace ApiPeliculas.Controllers
             return Created();
             //return CreatedAtRoute("Get_Categoria",new { categoriaId = categ.id},categ)
         }
+        //---
         [HttpPatch("{categoriaID:int}", Name = "Actualizar_Patch_Categoria")]
         [ProducesResponseType(201,Type = typeof(Categoria_Dto))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -100,6 +101,27 @@ namespace ApiPeliculas.Controllers
             if (!categ_repo.Actualizar_Categorias(categ))
             {
                 ModelState.AddModelError("", $"Algo salio mal actualizando el registro {_cat_dto.Nombre}");
+                return StatusCode(StatusCodes.Status500InternalServerError, ModelState);
+            }
+            return NoContent();
+        }
+        //---
+        [HttpDelete("{categoriaID}",Name ="Borrar_Categoria")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public IActionResult Borrar_Categoria(int categoriaID)
+        {
+            if (!categ_repo.Existe_Categorias(categoriaID) )
+            {
+                return NotFound(categoriaID);
+            }
+            Categoria categ = categ_repo.GetCategoria(categoriaID);
+            if (!categ_repo.Borrar_Categoria(categ))
+            {
+                ModelState.AddModelError("", $"Algo salio mal borrando el registro {categ.Nombre}");
                 return StatusCode(StatusCodes.Status500InternalServerError, ModelState);
             }
             return NoContent();
