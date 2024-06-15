@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ICategoriaRepositorio,Categoria_Repositorio>();
+builder.Services.AddScoped<IPeliculaRepositorio, Pelicula_Repositorio>();
 builder.Services.AddAutoMapper(typeof(Peliculas_Mapper));
 // Add services to the container.
 

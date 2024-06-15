@@ -18,7 +18,22 @@ namespace ApiPeliculas.Controllers
             peli_repo = _peli_repo;
             mapper = _mapper;
         }
-
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public IActionResult Get_Peliculs()
+        {
+            ICollection<Pelicula> lista_peli= peli_repo.Get_Peliculas();
+            List<Pelicula_Dto> list_peli_dto = new List<Pelicula_Dto>();
+            //---
+            foreach (var i in lista_peli)
+            {
+                list_peli_dto.Add(mapper.Map<Pelicula_Dto>(i));
+            }
+            return Ok(list_peli_dto);
+        }
+        
+        /*
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(Categoria_Dto))]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -46,8 +61,8 @@ namespace ApiPeliculas.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ModelState);
             }
             return Created();
-            //return CreatedAtRoute("Get_Categoria",new { categoriaId = categ.id},categ)
-        }
+            //return CreatedAtRoute("Get_Categoria",new { categoriaId = categ.id},categ)            
+        }*/
 
     }
 }
