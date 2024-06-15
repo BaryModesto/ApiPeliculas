@@ -55,7 +55,7 @@ namespace ApiPeliculas.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Crear_Categoria([FromBody] UsuarioRegistroDto _user_dto)
+        public async Task<IActionResult> Registro([FromBody] UsuarioRegistroDto _user_dto)
         {
             bool validar_nombre_usuario = user_repo.ES_Unico_Usuario(_user_dto.NombreUsuario);
             if (!validar_nombre_usuario)
@@ -76,6 +76,30 @@ namespace ApiPeliculas.Controllers
 
             respuesta_api.StatusCode = HttpStatusCode.OK;
             respuesta_api.IsSucess = true;            
+            return Ok(respuesta_api);
+        }
+
+        [HttpPost("Login")]
+        [ProducesResponseType(201, Type = typeof(UsuarioRegistroDto))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Login([FromBody] UsuarioLoginDto _user_dto)
+        {
+            var respuesta = await user_repo.Login(_user_dto);
+            
+            
+            if (respuesta == null || string.IsNullOrEmpty(respuesta.Token) )
+            {
+                respuesta_api.StatusCode = HttpStatusCode.BadRequest;
+                respuesta_api.IsSucess = false;
+                respuesta_api.ErrorMesasages.Add("El nombre de usuario o password son incorrectos");
+                return BadRequest(respuesta_api);
+            }           
+
+            respuesta_api.StatusCode = HttpStatusCode.OK;
+            respuesta_api.IsSucess = true;
+            respuesta_api.Result = respuesta;
             return Ok(respuesta_api);
         }
     }

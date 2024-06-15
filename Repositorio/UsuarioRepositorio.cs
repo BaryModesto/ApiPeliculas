@@ -17,7 +17,7 @@ namespace ApiPeliculas.Repositorio
         public UsuarioRepositorio(AplicationDbContext _bd,IConfiguration _conf)
         {
             bd = _bd;
-            palabra_secreta = _conf.GetValue("Api_Settings", "Palabra_Secreta");// 
+            palabra_secreta = _conf.GetValue<string>("Api_Settings:Palabra_Secreta");// 
         }
 
         public bool ES_Unico_Usuario(string _nombre_usuario)
