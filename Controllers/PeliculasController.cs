@@ -120,7 +120,7 @@ namespace ApiPeliculas.Controllers
         [HttpGet("{categoria_id:int}",Name = "Get_Peliculas_Categoria")]
         public IActionResult Get_Peliculas_Categoria(int categoria_id)
         {
-            ICollection<Pelicula> lista_peli = peli_repo.Get_Peliculas();
+            ICollection<Pelicula> lista_peli = peli_repo.Get_Peliculas_Categoria(categoria_id);
             if (lista_peli == null || !lista_peli.Any())
             {
                 return NotFound();
@@ -133,5 +133,24 @@ namespace ApiPeliculas.Controllers
             }
             return Ok(list_peli_dto);
         }
+
+        [HttpGet("{categoria_nombre:string}",Name = "Get_Peliculas_Nombre")]
+        public IActionResult Get_Peliculas_Nombre(string categoria_nombre)
+        {
+            try
+            {
+                var lista_peli = peli_repo.Get_Peliculas_Nombre(categoria_nombre.Trim());
+                if (lista_peli.Any())
+                {
+                    return Ok(lista_peli);
+                }
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error recuperando datos");
+            }
+        }
+
     }
 }
