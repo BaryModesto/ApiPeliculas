@@ -47,7 +47,7 @@ namespace ApiPeliculas.Repositorio
         }
         public bool Existe_Pelicula(int _id)
         {
-            if ( bd.Pelicula.Find(_id) == null)
+            if (bd.Pelicula.Find(_id) == null)
             {
                 return false;
             }
@@ -62,12 +62,14 @@ namespace ApiPeliculas.Repositorio
 
         public ICollection<Pelicula> Get_Peliculas()
         {
-            return bd.Pelicula.OrderBy(x =>  x.Nombre).ToList();
+            return bd.Pelicula.OrderBy(x => x.Nombre).ToList();
         }
 
         public ICollection<Pelicula> Get_Peliculas_Categoria(int _catID)
         {
-            return bd.Pelicula.Include(x=> x.Categoria).Where(x=> x.Id == _catID).OrderBy(x => x.Id).ToList();
+            var paso1 = bd.Pelicula.Include(x => x.Categoria);
+            var paso2 = paso1.Where(x => x.CategoriaID == _catID).OrderBy(x => x.Id).ToList();
+            return paso2;
         }
 
         public ICollection<Pelicula> Get_Peliculas_Nombre(string _nombre)
@@ -75,14 +77,14 @@ namespace ApiPeliculas.Repositorio
             IQueryable<Pelicula> query = bd.Pelicula;
             if (!string.IsNullOrEmpty(_nombre))
             {
-                query.Where(x => x.Nombre.Contains(_nombre) || x.Descripcion.Contains(_nombre));
+               query = query.Where(x => x.Nombre.Contains(_nombre) || x.Descripcion.Contains(_nombre));
             }
             return query.ToList();
         }
 
         public bool Guardar()
         {
-            return (bd.SaveChanges() >0)? true:false;
+            return (bd.SaveChanges() > 0) ? true : false;
         }
     }
 }

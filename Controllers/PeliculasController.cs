@@ -13,7 +13,7 @@ namespace ApiPeliculas.Controllers
     {
         IPeliculaRepositorio peli_repo;
         IMapper mapper;
-        public PeliculasController(IPeliculaRepositorio _peli_repo,IMapper _mapper)
+        public PeliculasController(IPeliculaRepositorio _peli_repo, IMapper _mapper)
         {
             peli_repo = _peli_repo;
             mapper = _mapper;
@@ -23,7 +23,7 @@ namespace ApiPeliculas.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public IActionResult Get_Peliculas()
         {
-            ICollection<Pelicula> lista_peli= peli_repo.Get_Peliculas();
+            ICollection<Pelicula> lista_peli = peli_repo.Get_Peliculas();
             List<Pelicula_Dto> list_peli_dto = new List<Pelicula_Dto>();
             //---
             foreach (var i in lista_peli)
@@ -32,7 +32,7 @@ namespace ApiPeliculas.Controllers
             }
             return Ok(list_peli_dto);
         }
-
+        
         [HttpGet("{pelicula_id:int}", Name = "Coger_Pelicula")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -44,7 +44,7 @@ namespace ApiPeliculas.Controllers
             if (peli_especifica == null)
             {
                 return NotFound();
-            }            
+            }
             return Ok(mapper.Map<Pelicula_Dto>(peli_especifica));
         }
         
@@ -65,7 +65,7 @@ namespace ApiPeliculas.Controllers
             }
             if (peli_repo.Existe_Pelicula(_peli_dto.Nombre))
             {
-                ModelState.AddModelError("", "La categoria ya existe");
+                ModelState.AddModelError("", "La pelicula ya existe");
                 return StatusCode(StatusCodes.Status404NotFound, ModelState);
             }
             Pelicula p = mapper.Map<Pelicula>(_peli_dto);
@@ -77,7 +77,7 @@ namespace ApiPeliculas.Controllers
             return Created();
             //return CreatedAtRoute("Get_Categoria",new { categoriaId = categ.id},categ)            
         }
-
+        
         [HttpPatch("{pelicula_id:int}", Name = "Actualizar_Patch_Pelicula")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -96,7 +96,7 @@ namespace ApiPeliculas.Controllers
             }
             return NoContent();
         }
-
+        
         [HttpDelete("{pelicula_id}", Name = "Borrar_Pelicula")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -116,8 +116,8 @@ namespace ApiPeliculas.Controllers
             }
             return NoContent();
         }
-
-        [HttpGet("{categoria_id:int}",Name = "Get_Peliculas_Categoria")]
+        
+        [HttpGet("Get_Peliculas_Categoria/{categoria_id:int}")]
         public IActionResult Get_Peliculas_Categoria(int categoria_id)
         {
             ICollection<Pelicula> lista_peli = peli_repo.Get_Peliculas_Categoria(categoria_id);
@@ -133,8 +133,8 @@ namespace ApiPeliculas.Controllers
             }
             return Ok(list_peli_dto);
         }
-
-        [HttpGet("{categoria_nombre:string}",Name = "Get_Peliculas_Nombre")]
+        
+        [HttpGet("Get_Peliculas_Nombre")]
         public IActionResult Get_Peliculas_Nombre(string categoria_nombre)
         {
             try
@@ -151,6 +151,6 @@ namespace ApiPeliculas.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error recuperando datos");
             }
         }
-
+        
     }
 }
