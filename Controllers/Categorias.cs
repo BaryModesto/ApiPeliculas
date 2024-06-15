@@ -57,7 +57,6 @@ namespace ApiPeliculas.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
         public IActionResult Crear_Categoria([FromBody]Crear_Categoria_Dto _cat_dto)
         {
             if (!ModelState.IsValid)

@@ -32,7 +32,7 @@ namespace ApiPeliculas.Repositorio
             return Guardar();
         }
 
-        public bool Existe_Peliculas(string _nombre)
+        public bool Existe_Pelicula(string _nombre)
         {
             bool encomtrado = false;
             try
@@ -45,7 +45,7 @@ namespace ApiPeliculas.Repositorio
             }
             return encomtrado;
         }
-        public bool Existe_Peliculas(int _id)
+        public bool Existe_Pelicula(int _id)
         {
             if ( bd.Pelicula.Find(_id) == null)
             {
