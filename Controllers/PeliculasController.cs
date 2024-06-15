@@ -78,5 +78,24 @@ namespace ApiPeliculas.Controllers
             //return CreatedAtRoute("Get_Categoria",new { categoriaId = categ.id},categ)            
         }
 
+        [HttpPatch("{pelicula_id:int}", Name = "Actualizar_Patch_Pelicula")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Actualizar_Patch_Pelicula(int pelicula_id, [FromBody] Pelicula_Dto _peli_dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var peli = mapper.Map<Pelicula>(_peli_dto);
+            if (!peli_repo.Actualizar_Peliculas(peli))
+            {
+                ModelState.AddModelError("", $"Algo salio mal actualizando el registro {_peli_dto.Nombre}");
+                return StatusCode(StatusCodes.Status500InternalServerError, ModelState);
+            }
+            return NoContent();
+        }
+
     }
 }
