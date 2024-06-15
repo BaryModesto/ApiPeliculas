@@ -32,8 +32,24 @@ namespace ApiPeliculas.Controllers
             }
             return Ok(list_peli_dto);
         }
+
+        [HttpGet("{pelicula_id:int}", Name = "Coger_Pelicula")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Get_Categoria(int pelicula_id)
+        {
+            Pelicula peli_especifica = peli_repo.GetPelicula(pelicula_id);
+            if (peli_especifica == null)
+            {
+                return NotFound();
+            }            
+            return Ok(mapper.Map<Pelicula_Dto>(peli_especifica));
+        }
+
+
         
-        /*
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(Categoria_Dto))]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -62,7 +78,7 @@ namespace ApiPeliculas.Controllers
             }
             return Created();
             //return CreatedAtRoute("Get_Categoria",new { categoriaId = categ.id},categ)            
-        }*/
+        }
 
     }
 }
