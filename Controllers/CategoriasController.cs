@@ -23,6 +23,7 @@ namespace ApiPeliculas.Controllers
         }
         //---
         [HttpGet]
+        [ResponseCache(CacheProfileName = "PorDefecto30")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public IActionResult Get_Categorias()
@@ -38,6 +39,7 @@ namespace ApiPeliculas.Controllers
             return Ok(list_cat_dto);        
         }
         [HttpGet("{categoriaId:int}", Name ="Coger_Categoria")]
+        [ResponseCache(CacheProfileName = "PorDefecto30")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
