@@ -20,6 +20,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AplicationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Cadena_Coneccion")));
 
+ builder.Services.AddCors(x => x.AddPolicy("PolicyCors",builder =>
+ {
+     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+ }));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,6 +35,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("PolicyCors");
 
 app.UseAuthorization();
 
