@@ -40,7 +40,7 @@ namespace ApiPeliculas.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get_Usuario(int usuarioId)
+        public IActionResult Get_Usuario(string usuarioId)
         {
             var especifico = user_repo.GetUsuario(usuarioId);
             if (especifico == null)
