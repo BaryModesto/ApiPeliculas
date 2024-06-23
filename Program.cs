@@ -4,6 +4,7 @@ using ApiPeliculas.PeliculasMapper;
 using ApiPeliculas.Repositorio;
 using ApiPeliculas.Repositorio.IRepositorio;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,13 +18,14 @@ builder.Services.AddAutoMapper(typeof(Peliculas_Mapper));
 
 builder.Services.AddControllers(x =>
 {
-    x.CacheProfiles.Add("PorDefecto30", new CacheProfile { Duration = 30 }); 1
+    x.CacheProfiles.Add("PorDefecto30", new CacheProfile { Duration = 30 }); 
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AplicationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Cadena_Coneccion")));
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AplicationDbContext>();
  builder.Services.AddCors(x => x.AddPolicy("PolicyCors",builder =>
  {
      builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
