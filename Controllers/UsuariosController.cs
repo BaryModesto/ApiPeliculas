@@ -35,7 +35,7 @@ namespace ApiPeliculas.Controllers
             }
             return Ok(list_dto);
         }
-        [HttpGet("{usuarioId:int}", Name = "Coger_Usuario")]
+        [HttpGet("{usuarioId}", Name = "Coger_Usuario")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
